@@ -10,37 +10,43 @@
 
 int main(void)
 {
-char *argv[] = {"/bin/ls","/usr/", NULL};
+char *args[20];
 pid_t child_pid = 0;
 int status;
 ssize_t bytes_read;
 size_t nbytes;
-char *str;
-struct stat st;
+char *path;
+char *parameter;
 
 printf("#cisfun$ ");
 nbytes = 0;
-str = NULL;
-bytes_read = getline(&str, &nbytes, stdin);
-argv[0] = strtok(str, "\n");
-argv[1] = NULL;
-str = argv[0];
-stat(str, &st);
-child_pid = fork();
+bytes_read = getline(&path, &nbytes, stdin);
+path = strtok(path, "/r/n/t ");
+parameter = strtok(NULL, "\r\n\t ");
+
+args[0] = path;
+args[1] = parameter;
+args[2] = NULL;
 
  while (bytes_read != -1)
    {
-     if (child_pid == -1)
+     if (1)
        {
-	 printf("Failed");
+	 child_pid = fork();
+	 if (child_pid == -1)
+	   printf("Failed");
+	 else if (child_pid == 0)
+	   execve(args[0], args, NULL);
+	 else 
+	   wait(&status);
        } 
-     else if (child_pid == 0)
+     else
        {
-	 execve(argv[0], argv, envp);
+	 printf("Command not found\n");
        }
-     else { /*child_pid != 0*/
-       wait(&status);
-     }
+     printf("#cisfun$ ");
+     bytes_read = getline(&path, &nbytes, stdin);
+     path = strtok(path, "\n");
    }
  return (0);
 }
