@@ -24,9 +24,9 @@ int main(void)
 	int status;/**indica el status del child process*/
 	int file = 0;/**Valor de retorno de exist, 0 si existe, != 0 si no existe*/
 	printf("#CisFun$ ");/**prompt mini-shell*/
+	bytes_read = getline(&path, &nbytes, stdin); /**Almacena el input en "stdin" en un buffer "path" de "nbytes", retorna el # de bytes leídos, o -1 (Ctrl+D))*/
 	while (bytes_read != -1)
 	{
-		bytes_read = getline(&path, &nbytes, stdin);/**Almacena el input en "stdin" en un buffer "path" de "nbytes", retorna el # de bytes leídos, o -1 (Ctrl+D))*/
 		path = strtok(path, "\r\n\t ");/**Parte el input en tokens con base en unos delimitadores("\r\n\t ") para evaluar uno por uno*/
 		parameter = strtok(NULL, "\r\n\t "); /**salta al siguiente token (parametro)*/
 		file = exist(path);/**Exist evalua que el path ingresado exista*/
@@ -65,6 +65,7 @@ int main(void)
 			i++;
 		}
 	printf("#Cisfun$ ");
+	bytes_read = getline(&path, &nbytes, stdin);
 	}
 	return (0);
 }
