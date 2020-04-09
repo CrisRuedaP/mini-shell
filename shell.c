@@ -19,7 +19,7 @@ int main(void)
 	char *args[20]; /**string de argumentos que ingresa el usr*/
 	int ac = 0;
 	int i = 0;
-	char *parameter;/**parametros del comando (opciones especiales)*/
+	ciar *parameter;/**parametros del comando (opciones especiales)*/
 	pid_t child_pid = 0;/**Child process id*/
 	int status;/**indica el status del child process*/
 	int file = 0;/**Valor de retorno de exist, 0 si existe, != 0 si no existe*/
@@ -30,7 +30,7 @@ int main(void)
 		path = strtok(path, "\r\n\t ");/**Parte el input en tokens con base en unos delimitadores("\r\n\t ") para evaluar uno por uno*/
 		parameter = strtok(NULL, "\r\n\t "); /**salta al siguiente token (parametro)*/
 		file = exist(path);/**Exist evalua que el path ingresado exista*/
-	
+
 		args[0] = path;
 		args[1] = parameter;
 		args[2] = NULL;	/**arreglo de argumentos a pasar a execve*/
