@@ -19,7 +19,7 @@ char *_getenv(const char *name)
 	  if(strcmp(token, name) == 0)
 	    {
 	      token = strtok(NULL,s);
-	      printf("%s\n", token);
+	      /**printf("%s\n", token);*/
 	     return (token);
 	    }
 	  i++;
@@ -28,12 +28,11 @@ char *_getenv(const char *name)
   return (0);
 }
 
-int main(void)
+/**int main(void)
 {
   char *env; 
     
-  env = _getenv("USER");
-  printf("%s", env);
+  env = _getenv("PATH");
+  printf("%s\n", env);
 
-}
-
+}*/
