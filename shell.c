@@ -19,7 +19,7 @@ int main(void)
 	char *args[20]; /**string de argumentos que ingresa el usr*/
 	int ac = 0;
 	int i = 0;
-	ciar *parameter;/**parametros del comando (opciones especiales)*/
+	char *parameter;/**parametros del comando (opciones especiales)*/
 	pid_t child_pid = 0;/**Child process id*/
 	int status;/**indica el status del child process*/
 	int file = 0;/**Valor de retorno de exist, 0 si existe, != 0 si no existe*/
@@ -54,7 +54,7 @@ int main(void)
 				else /**Es el padre*/
 					wait(&status);/**Detiene la ejecución del padre hasta que el child termine*/
 		}
-		else /**No encontró el archivo*/
+		else if (file != 0)/**No encontró el archivo*/
 		{
 			printf("Command not found433\n");
 		}
