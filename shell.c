@@ -15,10 +15,8 @@ int main(void)
 	ssize_t bytes_read = 0; /** Bytes leídos de un getline*/
 	size_t nbytes = 0; /**Tamaño del buffer*/
 	char *path = NULL; /**El path ingresado por el usuario*/
-	char *args[20]; /**string de argumentos que ingresa el usr*/
-	int ac = 0, count = 0;
-	int i = 0;
-	char *parameter = NULL;/**parametros del comando (opciones especiales)*/
+	char *args[20]; /**String de argumentos que ingresa el usr*/
+	int count = 0;
 	pid_t child_pid = 0;/**Child process id*/
 	int status = 0;/**indica el status del child process*/
 	int file = 0;/**Valor de retorno de exist, 0 si existe, != 0 si no existe*/
@@ -31,16 +29,12 @@ int main(void)
 			free(path);
 		else if (*path != '\n')
 		{
-		path = strtok(path, "\r\n\t ");/**Parte el input en tokens con base en unos delimitadores("\r\n\t ") para evaluar uno por uno*/
-		parameter = strtok(NULL, "\r\n\t "); /**salta al siguiente token (parametro)*/
-		file = exist(path);/**Exist evalua que el path ingresado exista*/
+			fill_args(path, args);
+		
+			file = exist(args[0]);/**Exist evalua que el path ingresado exista*/
 
-		args[0] = path;
-		args[1] = parameter;
-		args[2] = NULL;	/**arreglo de argumentos a pasar a execve*/
-		ac = 1;
-		if (file == 0) /**Encontró el archivo*/
-		{
+			if (file == 0) /**Encontró el archivo*/
+			{
 				child_pid = fork();/**Crea un proceso hijo*/
 				if (child_pid == -1)/**Falló al crear*/
 					_printp("failed\n", 7);
@@ -56,25 +50,19 @@ int main(void)
 				}
 				else /**Es el padre*/
 					wait(&status);/**Detiene la ejecución del padre hasta que el child termine*/
-		}
-		else if (file != 0)/**No encontró el archivo*/
-		{
-			print_not_found(path, count);
-			/**printf("not found");*/
+			}
+			else if (file != 0)/**No encontró el archivo*/
+			{
+				print_not_found(path, count);
+				/**printf("not found");*/
 
+			}
+			free(*args);
 		}
-		while (i < ac) /**Libera el arreglo de argunmentos*/
-		{
-			free(args[i]);
-			args[i] = NULL;
-			i++;
-		}
-		}
-	i = 0; /**Reinicializa el contador i, para que en un nuevo proceso pueda liberar exitosamente (getline)*/
-	path = NULL; /**Reinicializa el puntero, para que getline tenga el puntero libre en cada llamado */
-	count++;
-	_printp("#Cisfun$ ", 9);/**prompt mini-shell*/
-	bytes_read = getline(&path, &nbytes, stdin);
+		path = NULL; /**Reinicializa el puntero, para que getline tenga el puntero libre en cada llamado */
+		count++;
+		_printp("#Cisfun$ ", 9);/**prompt mini-shell*/
+		bytes_read = getline(&path, &nbytes, stdin);
 	}
 	_putchar('\n');
 	free(path); /**Libera el ultimo getline para el EOF*/

@@ -10,6 +10,7 @@ typedef struct list_s
 } list_t;
 
 list_t *add_node_end(list_t **head, const char *str);
+int fill_args(char *path, char **args);	
 int print_numbers(int n);
 int _strlen(const char *s);
 void print_not_found(char *cmd, int count);
